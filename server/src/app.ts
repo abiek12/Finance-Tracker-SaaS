@@ -2,7 +2,7 @@ import express, { Application } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 
-dotenv.config({ path: '/server/.env' });
+dotenv.config();
 
 // Create Express server
 const app: Application = express();

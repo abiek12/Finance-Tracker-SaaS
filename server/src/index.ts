@@ -1,4 +1,5 @@
 import app from "./app";
+import { connectDB } from "./config/db.config";
 
 const PORT = process.env.PORT || 4006;
 
@@ -9,6 +10,7 @@ const start = async () => {
     });
 
     // Connect to database
+    await connectDB();
     
    } catch (error) {
         console.log(error);
