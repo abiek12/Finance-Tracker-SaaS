@@ -6,6 +6,10 @@ export class UserRepository {
         return await new User(userDetails).save();
     }
 
+    findAllUsers = async (): Promise<IUser[]> => {
+        return await User.find();
+    }
+
     findUserByEmail = async (email: string): Promise<IUser | null> => {
         return await User.findOne({
             email
