@@ -1,8 +1,9 @@
+import { UserRegData } from "../../types/user.types";
 import { IUser } from "../interfaces/user.interface";
 import { User } from "../schemas/user.schema";
 
 export class UserRepository {
-    createUser = async (userDetails: IUser): Promise<IUser> => {
+    createUser = async (userDetails: UserRegData): Promise<IUser> => {
         return await new User(userDetails).save();
     }
 
