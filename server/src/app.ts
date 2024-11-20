@@ -1,6 +1,7 @@
 import express, { Application } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import authRoutes from "./routes/auth.routes";
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
+app.use("/api/v1/auth", authRoutes);
 
 
 export default app;
