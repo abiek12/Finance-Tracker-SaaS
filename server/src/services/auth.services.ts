@@ -1,12 +1,15 @@
+import { mapToUserResponse } from "../dtos/user.dto";
+import { CommonEnums } from "../models/enums/common.enum";
 import { IUser } from "../models/interfaces/user.interface";
 import { UserRepository } from "../models/repositories/user.repository";
-import { UserRegData } from "../types/user.types";
-import { hashPassword } from "../utils/common.utils";
+import { UserLoginData, UserRegData, userLoginResponse } from "../types/user.types";
+import { comparePassword, generateAccessToken, generateRefreshToken, hashPassword } from "../utils/common.utils";
 import logger from "../utils/logger.utils";
 
 export class AuthServices {
     private userRepository = new UserRepository();
 
+    // User Registration
     userRegistration = async (userData: UserRegData): Promise<IUser> => {
         try {
             const hashedPassword = await hashPassword(userData.password);
@@ -19,6 +22,32 @@ export class AuthServices {
             return newUser;
         } catch (error) {
             logger.error("USER-REG-SERVICES:: Error in userRegistration service: ", error);
+            throw error;
+        }
+    };
+
+    // User Login
+    userLogin = async (userData: UserLoginData): Promise< userLoginResponse | null | CommonEnums.INVALID_PASSWORD> => {
+        try {
+            const user = await this.userRepository.findUserByEmail(userData.email);
+            if(!user) return null;
+
+            const isPasswordMatched = await comparePassword(userData.password, user.password);
+            if(!isPasswordMatched) return CommonEnums.INVALID_PASSWORD;
+
+            const accessToken: string = await generateAccessToken(user._id);
+            const refreshToken: string = await generateRefreshToken(user._id); 
+
+            const userResponse = mapToUserResponse(user);
+
+            return {
+                userResponse,
+                accessToken,
+                refreshToken
+            }
+            
+        } catch (error) {
+            logger.error("USER-REG-SERVICES:: Error in userLogin service: ", error);
             throw error;
         }
     }

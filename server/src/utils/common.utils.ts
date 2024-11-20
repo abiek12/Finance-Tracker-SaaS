@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 const SALT_ROUND = 10;
 const salt = bcrypt.genSaltSync(SALT_ROUND);
@@ -25,4 +26,21 @@ export const CREATED_MSG = 'Created';
 // Hash Password
 export const hashPassword = async (password: string): Promise<string> => {
     return await bcrypt.hash(password, salt);
+}
+
+// Compare Password
+export const comparePassword = async (plainPassword: string, hashedPassword: string): Promise<boolean> => {
+    return bcrypt.compare(plainPassword, hashedPassword);    
+}
+
+const TOKEN_SECRET = process.env.TOKEN_SECRET ?? 'secret';
+
+// Generate Access Token
+export const generateAccessToken = async (userId: string): Promise<string> => {
+    return jwt.sign({ userId }, TOKEN_SECRET , { expiresIn: '1h' });
+}
+
+// Generate Refresh Token
+export const generateRefreshToken = async (userId: string): Promise<string> => {
+    return jwt.sign({ userId }, TOKEN_SECRET);
 }
