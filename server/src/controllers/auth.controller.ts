@@ -29,7 +29,7 @@ export class AuthController {
 
             const newUser = await this.authServices.userRegistration(userData); 
             logger.info("USER-REG-CONTROLLER:: User registered successfully");
-            res.status(200).send(successResponse(SUCCESS, newUser, "User registered successfully"));
+            res.status(SUCCESS).send(successResponse(SUCCESS, newUser, "User registered successfully"));
             return;
         } catch (error) {
             logger.error("USER-REG-CONTROLLER:: Error in userRegistration controller: ", error);
