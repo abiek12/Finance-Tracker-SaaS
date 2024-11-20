@@ -1,15 +1,5 @@
 import { IUser } from "../models/interfaces/user.interface";
-
-export interface UserResponseDto {
-  id: string;
-  userName: string;
-  email: string;
-  isEmailVerified: boolean;
-  isDeleted: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
+import { UserResponseDto } from "../types/user.types";
 export const mapToUserResponse = (user: IUser): UserResponseDto => {
   return {
       id: user._id,
