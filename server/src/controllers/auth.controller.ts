@@ -5,6 +5,8 @@ import logger from "../utils/logger.utils";
 import { BAD_REQUEST, SUCCESS } from "../utils/common.utils";
 import { errorResponse, successResponse } from "../utils/responseHandler.utils";
 import { UserRepository } from "../models/repositories/user.repository";
+import { UserResponseDto, mapToUserResponse } from "../dtos/user.dto";
+import { IUser } from "../models/interfaces/user.interface";
 
 export class AuthController {
     private authServices = new AuthServices();
@@ -28,8 +30,10 @@ export class AuthController {
             }
 
             const newUser = await this.authServices.userRegistration(userData); 
+            const userResponse = mapToUserResponse(newUser);
+
             logger.info("USER-REG-CONTROLLER:: User registered successfully");
-            res.status(SUCCESS).send(successResponse(SUCCESS, newUser, "User registered successfully"));
+            res.status(SUCCESS).send(successResponse(SUCCESS, userResponse, "User registered successfully"));
             return;
         } catch (error) {
             logger.error("USER-REG-CONTROLLER:: Error in userRegistration controller: ", error);
