@@ -64,8 +64,16 @@ export class AuthController {
                 return;
             }
 
+            const resData = {
+                userId: userResponse.userResponse.id,
+                userName: userResponse.userResponse.userName,
+                email: userResponse.userResponse.email,
+                accessToken: userResponse.accessToken,
+                refreshToken: userResponse.refreshToken
+            }
+
             logger.info("USER-LOGIN-CONTROLLER:: User logged in successfully");
-            res.status(SUCCESS).send(successResponse(SUCCESS, userResponse, "User logged in successfully"));
+            res.status(SUCCESS).send(successResponse(SUCCESS, resData, "User logged in successfully"));
             return;
         } catch (error) {
             logger.error("USER-REG-CONTROLLER:: Error in userLogin controller: ", error);
