@@ -5,8 +5,7 @@ import logger from "../utils/logger.utils";
 import { BAD_REQUEST, SUCCESS } from "../utils/common.utils";
 import { errorResponse, successResponse } from "../utils/responseHandler.utils";
 import { UserRepository } from "../models/repositories/user.repository";
-import { UserResponseDto, mapToUserResponse } from "../dtos/user.dto";
-import { IUser } from "../models/interfaces/user.interface";
+import { mapToUserResponse } from "../dtos/user.dto";
 
 export class AuthController {
     private authServices = new AuthServices();
