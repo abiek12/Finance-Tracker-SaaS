@@ -16,21 +16,25 @@ export class AuthController {
             const userData = req.body as UserRegData;
             if(!userData.userName || !userData.email || !userData.password) {
                 logger.error("USER-REG-CONTROLLER:: Missing required fields");
-                return res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Missing required fields"));
+                res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Missing required fields"));
+                return;
             }
 
             const existingUser = await this.userRepo.findUserByEmail(userData.email);
             if(existingUser) {
                 logger.error("USER-REG-CONTROLLER:: User already exists with this email");
-                return res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "User already exists with this email"));
+                res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "User already exists with this email"));
+                return;
             }
 
             const newUser = await this.authServices.userRegistration(userData); 
             logger.info("USER-REG-CONTROLLER:: User registered successfully");
-            return res.status(200).send(successResponse(SUCCESS, newUser, "User registered successfully"));
+            res.status(200).send(successResponse(SUCCESS, newUser, "User registered successfully"));
+            return;
         } catch (error) {
             logger.error("USER-REG-CONTROLLER:: Error in userRegistration controller: ", error);
-            return res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Error in userRegistration controller"));
+            res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Error in userRegistration controller"));
+            return;
         }
     }
 
