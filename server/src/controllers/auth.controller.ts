@@ -30,10 +30,9 @@ export class AuthController {
             }
 
             const newUser = await this.authServices.userRegistration(userData); 
-            const userResponse = mapToUserResponse(newUser);
 
             logger.info("USER-REG-CONTROLLER:: User registered successfully");
-            res.status(SUCCESS).send(successResponse(SUCCESS, userResponse, "User registered successfully"));
+            res.status(SUCCESS).send(successResponse(SUCCESS, newUser, "User registered successfully"));
             return;
         } catch (error) {
             logger.error("USER-REG-CONTROLLER:: Error in userRegistration controller: ", error);
@@ -65,7 +64,7 @@ export class AuthController {
                 return;
             }
 
-            logger.info("USER-REG-CONTROLLER:: User logged in successfully");
+            logger.info("USER-LOGIN-CONTROLLER:: User logged in successfully");
             res.status(SUCCESS).send(successResponse(SUCCESS, userResponse, "User logged in successfully"));
             return;
         } catch (error) {

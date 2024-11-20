@@ -1,8 +1,7 @@
 import { mapToUserResponse } from "../dtos/user.dto";
 import { CommonEnums } from "../models/enums/common.enum";
-import { IUser } from "../models/interfaces/user.interface";
 import { UserRepository } from "../models/repositories/user.repository";
-import { UserLoginData, UserRegData, userLoginResponse } from "../types/user.types";
+import { UserLoginData, UserRegData, UserResponseDto, userLoginResponse } from "../types/user.types";
 import { comparePassword, generateAccessToken, generateRefreshToken, hashPassword } from "../utils/common.utils";
 import logger from "../utils/logger.utils";
 
@@ -10,7 +9,7 @@ export class AuthServices {
     private userRepository = new UserRepository();
 
     // User Registration
-    userRegistration = async (userData: UserRegData): Promise<IUser> => {
+    userRegistration = async (userData: UserRegData): Promise<UserResponseDto> => {
         try {
             const hashedPassword = await hashPassword(userData.password);
             const userDetails = {
@@ -19,7 +18,9 @@ export class AuthServices {
             };
 
             const newUser = await this.userRepository.createUser(userDetails);
-            return newUser;
+            const userResponse = mapToUserResponse(newUser);
+
+            return userResponse;
         } catch (error) {
             logger.error("USER-REG-SERVICES:: Error in userRegistration service: ", error);
             throw error;
