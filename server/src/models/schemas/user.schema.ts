@@ -25,6 +25,15 @@ const userSchema: Schema = new Schema({
     otp: {
         type: String
     },
+    otpExpireTime: {
+        type: Date
+    },
+    oauthProvider: {
+        type: String
+    },
+    oauthId: {
+        type: String
+    },
     isDeleted: {
         type: Boolean,
         default: false
