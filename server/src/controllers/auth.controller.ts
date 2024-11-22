@@ -5,7 +5,6 @@ import logger from "../utils/logger.utils";
 import { BAD_REQUEST, SUCCESS } from "../utils/common.utils";
 import { errorResponse, successResponse } from "../utils/responseHandler.utils";
 import { UserRepository } from "../models/repositories/user.repository";
-import { mapToUserResponse } from "../dtos/user.dto";
 import { CommonEnums } from "../models/enums/common.enum";
 
 export class AuthController {
@@ -36,7 +35,7 @@ export class AuthController {
             return;
         } catch (error) {
             logger.error("USER-REG-CONTROLLER:: Error in userRegistration controller: ", error);
-            res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Error in userRegistration controller"));
+            res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Error while registering user!"));
             return;
         }
     }
@@ -77,7 +76,7 @@ export class AuthController {
             return;
         } catch (error) {
             logger.error("USER-REG-CONTROLLER:: Error in userLogin controller: ", error);
-            res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Error in userLogin controller"));
+            res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Error while logging in user!"));
             return   
         }
     }
