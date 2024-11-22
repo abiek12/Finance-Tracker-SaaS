@@ -37,13 +37,14 @@ export class UserControllers {
     updateUserDetails = async (req: Request, res: Response) => {
         try {
             const userId = (req as any).user._id;
+            const updatedData = req.body;
             if(!userId) {
                 logger.error("UPDATE-USER-CONTROLLER:: Missing required fields");
                 res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Missing required fields"));
                 return;
             }
 
-            const user = await this.userServices.updateUserDetails(userId, req.body);
+            const user = await this.userServices.updateUserDetails(userId, updatedData);
             if(user === CommonEnums.USER_NOT_FOUND) {
                 logger.error("UPDATE-USER-CONTROLLER:: User not found");
                 res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "User not found"));
