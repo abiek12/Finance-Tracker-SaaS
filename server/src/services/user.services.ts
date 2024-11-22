@@ -17,4 +17,16 @@ export class UserServices {
             throw error;
         }
     }
+
+    updateUserDetails = async (id: string, data: any): Promise<UserResponseDto | null> => {
+        try {
+            const user = await this.userRepository.updateUserById(id, data);
+            if(!user) return null;
+
+            return mapToUserResponse(user);
+        } catch (error) {
+            logger.error("UPDATE-USER-SERVICES:: Error in UserServices.updateUserDetails: ", error);
+            throw error;
+        }
+    }
 }
