@@ -1,4 +1,5 @@
 import { mapToUserResponse } from "../dtos/user.dto";
+import { CommonEnums } from "../models/enums/common.enum";
 import { UserRepository } from "../models/repositories/user.repository";
 import { UserResponseDto } from "../types/user.types";
 import logger from "../utils/logger.utils";
@@ -18,8 +19,11 @@ export class UserServices {
         }
     }
 
-    updateUserDetails = async (id: string, data: any): Promise<UserResponseDto | null> => {
+    updateUserDetails = async (id: string, data: any): Promise<UserResponseDto | null | CommonEnums.USER_NOT_FOUND> => {
         try {
+            const isUserExist = await this.userRepository.findUserById(id);
+            if(!isUserExist) return CommonEnums.USER_NOT_FOUND;
+
             const user = await this.userRepository.updateUserById(id, data);
             if(!user) return null;
 
