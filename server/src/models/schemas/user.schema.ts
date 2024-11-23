@@ -8,10 +8,15 @@ const userSchema: Schema = new Schema({
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true,
+        match: [/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/, 'Invalid email address.'] // Email validation
     },
     phone: {
-        type: String
+        type: String,
+        unique: true,
+        default: null,
+        match: [/^(\+\d{1,3}[- ]?)?\d{10}$/, 'Invalid phone number.'] // Phone number validation
     },
     password: {
         type: String,
@@ -26,16 +31,44 @@ const userSchema: Schema = new Schema({
         default: false
     },
     otp: {
-        type: String
+        type: String,
+        default: null
     },
     otpExpireTime: {
-        type: Date
+        type: Date,
+        default: null
     },
     oauthProvider: {
-        type: String
+        type: String,
+        default: null
     },
     oauthId: {
-        type: String
+        type: String,
+        default: null
+    },
+    loginAttempts: {
+        type: Number,
+        default: 0
+    },
+    lockUntil: {
+        type: Date,
+        default: 0
+    },
+    lastLogin: {
+        type: Date,
+        default: null
+    },
+    profilePicture: {
+        type: String,
+        default: null
+    },
+    resetPasswordToken: {
+        type: String,
+        default: null
+    },
+    resetPasswordExpires: {
+        type: Date,
+        default: null
     },
     isDeleted: {
         type: Boolean,
