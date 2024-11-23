@@ -37,7 +37,7 @@ const userSchema: Schema = new Schema({
     },
     otpExpireTime: {
         type: Date,
-        default: null
+        default: () => new Date(0)
     },
     oauthProvider: {
         type: String,
@@ -102,10 +102,8 @@ userSchema.pre("save", function (next) {
     next();
 });
 
-// Indexes
+// INDEXES
 // Single Field Indexes
-userSchema.index({email: 1}, {unique: true});
-userSchema.index({phone: 1}, {unique: true});
 userSchema.index({isDeleted: 1});
 userSchema.index({status: 1});
 
