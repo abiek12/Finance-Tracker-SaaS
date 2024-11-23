@@ -17,6 +17,12 @@ export class UserRepository {
         });
     }
 
+    findUserByPhone = async (phone: string): Promise<IUser | null> => {
+        return await User.findOne({
+            phone
+        });
+    }
+
     findUserById = async (id: string): Promise<IUser | null> => {
         return await User.findById(id);
     }

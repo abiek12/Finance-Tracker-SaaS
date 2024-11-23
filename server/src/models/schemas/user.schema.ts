@@ -10,6 +10,9 @@ const userSchema: Schema = new Schema({
         type: String,
         required: true
     },
+    phone: {
+        type: String
+    },
     password: {
         type: String,
         required: true
@@ -23,6 +26,15 @@ const userSchema: Schema = new Schema({
         default: false
     },
     otp: {
+        type: String
+    },
+    otpExpireTime: {
+        type: Date
+    },
+    oauthProvider: {
+        type: String
+    },
+    oauthId: {
         type: String
     },
     isDeleted: {

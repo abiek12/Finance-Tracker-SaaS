@@ -2,7 +2,9 @@ export interface UserResponseDto {
   id: string;
   userName: string;
   email: string;
+  phone: string;
   isEmailVerified: boolean;
+  twoFactorAuth: boolean;
   isDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -15,6 +17,7 @@ export interface UserLoginData {
 
 export interface UserRegData extends UserLoginData {
     userName: string;
+    phone: string;
 }
 
 export interface userLoginResponse {
