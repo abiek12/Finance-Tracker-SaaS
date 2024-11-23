@@ -66,7 +66,6 @@ export class AuthController {
             const resData = {
                 userId: userResponse.userResponse.id,
                 userName: userResponse.userResponse.userName,
-                email: userResponse.userResponse.email,
                 accessToken: userResponse.accessToken,
                 refreshToken: userResponse.refreshToken
             }

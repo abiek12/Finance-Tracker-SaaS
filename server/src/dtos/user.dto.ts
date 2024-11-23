@@ -5,6 +5,7 @@ export const mapToUserResponse = (user: IUser): UserResponseDto => {
       id: user._id,
       userName: user.userName,
       email: user.email,
+      phone: user.phone,
       isEmailVerified: user.isEmailVerified,
       isDeleted: user.isDeleted,
       createdAt: user.createdAt,

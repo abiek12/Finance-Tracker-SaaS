@@ -2,6 +2,7 @@ export interface UserResponseDto {
   id: string;
   userName: string;
   email: string;
+  phone: string;
   isEmailVerified: boolean;
   isDeleted: boolean;
   createdAt: Date;
@@ -15,6 +16,7 @@ export interface UserLoginData {
 
 export interface UserRegData extends UserLoginData {
     userName: string;
+    phone: string;
 }
 
 export interface userLoginResponse {
