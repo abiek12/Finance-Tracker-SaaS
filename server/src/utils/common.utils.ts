@@ -52,3 +52,7 @@ export const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
 }
+
+// Create token with id
+export const createUniqueToken = async (id: string): Promise<string> => {
+}

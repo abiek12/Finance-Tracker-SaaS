@@ -16,8 +16,8 @@ export interface IUser {
     lockUntil: Date;
     lastLogin: Date;
     profilePicture: string;
-    resetPasswordToken: string;
-    resetPasswordExpires: Date;
+    verificationToken: string;
+    verificationTokenExpires: Date;
     role: UserRoles;
     status: UserStatus;
     isDeleted: boolean;

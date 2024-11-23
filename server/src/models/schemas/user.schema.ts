@@ -63,11 +63,11 @@ const userSchema: Schema = new Schema({
         type: String,
         default: null
     },
-    resetPasswordToken: {
+    verificationToken: {
         type: String,
         default: null
     },
-    resetPasswordExpires: {
+    verificationTokenExpires: {
         type: Date,
         default: null
     },
