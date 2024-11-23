@@ -4,3 +4,8 @@ export type logType = {
     timestamp: string;
     stack?: string;
 };
+
+export type tokenType = {
+    verificationToken: string;
+    verificationTokenExpires: Date;
+};

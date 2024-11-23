@@ -1,3 +1,4 @@
+import { tokenType } from "../../types/common.types";
 import { UserRegData } from "../../types/user.types";
 import { IUser } from "../interfaces/user.interface";
 import { User } from "../schemas/user.schema";
@@ -39,5 +40,12 @@ export class UserRepository {
 
     updateUserLastLogin = async (id: string): Promise<void> => {
         await User.findByIdAndUpdate(id, { lastLogin: new Date()})
+    }
+
+    setVerificationToken = async (id: string, data: tokenType): Promise<void> => {
+        await User.findByIdAndUpdate(id, {
+            verificationToken: data.verificationToken,
+            verificationTokenExpires: data.verificationTokenExpires
+        });
     }
 }

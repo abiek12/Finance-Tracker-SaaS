@@ -55,4 +55,5 @@ export const validateEmail = (email: string): boolean => {
 
 // Create token with id
 export const createUniqueToken = async (id: string): Promise<string> => {
+    return jwt.sign({ id }, TOKEN_SECRET);
 }
