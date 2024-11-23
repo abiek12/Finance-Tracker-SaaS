@@ -4,6 +4,7 @@ export interface UserResponseDto {
   email: string;
   phone: string;
   isEmailVerified: boolean;
+  twoFactorAuth: boolean;
   isDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;

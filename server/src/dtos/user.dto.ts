@@ -7,6 +7,7 @@ export const mapToUserResponse = (user: IUser): UserResponseDto => {
       email: user.email,
       phone: user.phone,
       isEmailVerified: user.isEmailVerified,
+      twoFactorAuth: user.twoFA,
       isDeleted: user.isDeleted,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt
