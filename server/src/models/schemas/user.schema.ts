@@ -1,5 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import { IUser } from "../interfaces/user.interface";
+import { UserRoles, UserStatus } from "../enums/user.enum";
 
 const userSchema: Schema = new Schema({
     userName: {
@@ -69,6 +70,16 @@ const userSchema: Schema = new Schema({
     resetPasswordExpires: {
         type: Date,
         default: null
+    },
+    role: {
+        type: String,
+        enum: UserRoles,
+        default: UserRoles.USER
+    },
+    status: {
+        type: String,
+        enum: UserStatus,
+        default: UserStatus.ACTIVE
     },
     isDeleted: {
         type: Boolean,
