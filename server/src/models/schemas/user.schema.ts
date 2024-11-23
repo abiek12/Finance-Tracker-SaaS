@@ -95,4 +95,20 @@ const userSchema: Schema = new Schema({
     }
 });
 
+
+// Pre-save middleware to auto-update the `updatedAt` field
+userSchema.pre("save", function (next) {
+    this.updatedAt = new Date();
+    next();
+});
+
+// Indexes
+userSchema.index({email: 1}, {unique: true});
+userSchema.index({phone: 1}, {unique: true});
+userSchema.index({isDeleted: 1});
+userSchema.index({status: 1});
+userSchema.index({createdAt: 1});
+userSchema.index({ oauthProvider: 1, oauthId: 1 }); // For OAuth lookups (compound index)
+userSchema.index({ otp: 1, otpExpireTime: 1 }); // For OTP validation with expiry time (compound index)
+
 export const User = mongoose.model<IUser & Document>('User', userSchema);
