@@ -1,5 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const SALT_ROUND = 10;
 const salt = bcrypt.genSaltSync(SALT_ROUND);
@@ -33,10 +35,10 @@ export const comparePassword = async (plainPassword: string, hashedPassword: str
     return bcrypt.compare(plainPassword, hashedPassword);    
 }
 
-const TOKEN_SECRET = process.env.TOKEN_SECRET ?? 'secret';
+const TOKEN_SECRET = process.env.TOKEN_SECRET || 'secret';
 
 // Generate Access Token
-export const generateAccessToken = async (userId: string): Promise<string> => {
+export const generateAccessToken = async (userId: string): Promise<string> => {    
     return jwt.sign({ userId }, TOKEN_SECRET , { expiresIn: '1h' });
 }
 

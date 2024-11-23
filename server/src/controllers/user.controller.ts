@@ -11,7 +11,7 @@ export class UserControllers {
     // Get User Details
     getUserDetails = async (req: Request, res: Response) => {
         try {
-            const userId = (req as any).user._id;
+            const userId = (req as any).user.userId;
             if(!userId) {
                 logger.error("GET-USER-CONTROLLER:: Missing required fields");
                 res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Missing required fields"));
@@ -36,7 +36,7 @@ export class UserControllers {
     // Update User Details
     updateUserDetails = async (req: Request, res: Response) => {
         try {
-            const userId = (req as any).user._id;
+            const userId = (req as any).user.userId;
             const updatedData = req.body;
             if(!userId) {
                 logger.error("UPDATE-USER-CONTROLLER:: Missing required fields");
