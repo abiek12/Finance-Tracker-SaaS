@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { AuthServices } from "../services/auth.services";
 import { UserRegData, userLoginResponse } from "../types/user.types";
 import logger from "../utils/logger.utils";
-import { BAD_REQUEST, SUCCESS } from "../utils/common.utils";
+import { BAD_REQUEST, SUCCESS, validateEmail } from "../utils/common.utils";
 import { errorResponse, successResponse } from "../utils/responseHandler.utils";
 import { UserRepository } from "../models/repositories/user.repository";
 import { CommonEnums } from "../models/enums/common.enum";
@@ -21,11 +21,32 @@ export class AuthController {
                 return;
             }
 
+            if(!validateEmail(userData.email)) {
+                logger.error("USER-REG-CONTROLLER:: Invalid email format");
+                res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Invalid email format"));
+                return;
+            }
+
             const existingUser = await this.userRepo.findUserByEmail(userData.email);
             if(existingUser) {
                 logger.error("USER-REG-CONTROLLER:: User already exists with this email");
                 res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "User already exists with this email"));
                 return;
+            }
+
+            if(userData.phone) {
+                if(userData.phone.length !== 10) {
+                    logger.error("USER-REG-CONTROLLER:: Invalid phone number");
+                    res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Invalid phone number"));
+                    return;
+                }
+
+                const existingUserWithPhone = await this.userRepo.findUserByPhone(userData.phone);
+                if(existingUserWithPhone) {
+                    logger.error("USER-REG-CONTROLLER:: User already exists with this phone number");
+                    res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "User already exists with this phone number"));
+                    return;
+                }
             }
 
             const newUser = await this.authServices.userRegistration(userData); 

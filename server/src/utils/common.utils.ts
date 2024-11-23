@@ -46,3 +46,9 @@ export const generateAccessToken = async (userId: string): Promise<string> => {
 export const generateRefreshToken = async (userId: string): Promise<string> => {
     return jwt.sign({ userId }, TOKEN_SECRET);
 }
+
+// Validate Email
+export const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
