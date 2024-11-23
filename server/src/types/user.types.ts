@@ -1,13 +1,17 @@
 export interface UserResponseDto {
-  id: string;
-  userName: string;
-  email: string;
-  phone: string;
-  isEmailVerified: boolean;
-  twoFactorAuth: boolean;
-  isDeleted: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+    id: string;
+    userName: string;
+    email: string;
+    phone: string;
+    isEmailVerified: boolean;
+    twoFactorAuth: boolean;
+    role: string;
+    status: string;
+    profilePicture: string;
+    lastLogin: Date;
+    isDeleted: boolean;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export interface UserLoginData {
