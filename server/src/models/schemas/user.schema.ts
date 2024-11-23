@@ -103,11 +103,16 @@ userSchema.pre("save", function (next) {
 });
 
 // Indexes
+// Single Field Indexes
 userSchema.index({email: 1}, {unique: true});
 userSchema.index({phone: 1}, {unique: true});
 userSchema.index({isDeleted: 1});
 userSchema.index({status: 1});
+
+// Sorting indexes
 userSchema.index({createdAt: 1});
+
+// compound indexes
 userSchema.index({ oauthProvider: 1, oauthId: 1 }); // For OAuth lookups (compound index)
 userSchema.index({ otp: 1, otpExpireTime: 1 }); // For OTP validation with expiry time (compound index)
 
