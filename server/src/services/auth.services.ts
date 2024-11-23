@@ -37,7 +37,8 @@ export class AuthServices {
             if(!isPasswordMatched) return CommonEnums.INVALID_PASSWORD;
 
             const accessToken: string = await generateAccessToken(user._id);
-            const refreshToken: string = await generateRefreshToken(user._id); 
+            const refreshToken: string = await generateRefreshToken(user._id);
+            await this.userRepository.updateUserLastLogin(user._id);
 
             const userResponse = mapToUserResponse(user);
 

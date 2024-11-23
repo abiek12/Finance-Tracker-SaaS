@@ -36,4 +36,8 @@ export class UserRepository {
     deleteUserById = async (id: string): Promise<IUser | null> => {
         return await User.findByIdAndDelete(id);
     }
+
+    updateUserLastLogin = async (id: string): Promise<void> => {
+        await User.findByIdAndUpdate(id, { lastLogin: new Date()})
+    }
 }

@@ -53,7 +53,7 @@ const userSchema: Schema = new Schema({
     },
     lockUntil: {
         type: Date,
-        default: 0
+        default: () => new Date(0)
     },
     lastLogin: {
         type: Date,
