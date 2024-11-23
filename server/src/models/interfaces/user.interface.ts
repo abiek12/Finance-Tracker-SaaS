@@ -1,3 +1,5 @@
+import { UserRoles, UserStatus } from "../enums/user.enum";
+
 export interface IUser {
     _id: string;
     userName: string;
@@ -16,6 +18,8 @@ export interface IUser {
     profilePicture: string;
     resetPasswordToken: string;
     resetPasswordExpires: Date;
+    role: UserRoles;
+    status: UserStatus;
     isDeleted: boolean;
     createdAt: Date;
     updatedAt: Date;
