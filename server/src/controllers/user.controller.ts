@@ -99,6 +99,52 @@ export class UserControllers {
         }
     }
 
+    // User Email Verification
+    userVerification = async (req: Request, res: Response) => {
+        try {
+            const userId: string = req.params.userId;
+            const verificationToken: string = req.query.token as string;
+
+            if(!userId) {
+                logger.error("USER-VERIFICATION-SERVICES:: User id not found!");
+                res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "User id not found!"));
+                return;
+            }
+
+            if(!verificationToken) {
+                logger.error("USER-VERIFICATION-SERVICES:: Verification token not found!");
+                res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Verification token not found!"));
+                return;
+            }
+
+            const response: CommonEnums = await this.userServices.userVerification(userId, verificationToken);
+            if(response === CommonEnums.USER_NOT_FOUND) {
+                logger.error("USER-VERIFICATION-SERVICES:: User not found");
+                res.status(NOT_FOUND).send(errorResponse(NOT_FOUND, "User not found"));
+                return;
+            }
+
+            if(response === CommonEnums.USER_ALREADY_VERIFIED) {
+                logger.error("USER-VERIFICATION-SERVICES:: User already verified");
+                res.status(CONFLICT).send(errorResponse(CONFLICT, "User already verified"));
+                return;
+            }
+
+            if(response === CommonEnums.INVALID) {
+                logger.error("USER-VERIFICATION-SERVICES:: Invalid token");
+                res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Invalid token"));
+                return;
+            }
+
+            logger.info("USER-VERIFICATION-SERVICES:: User verified successfully");
+            res.status(SUCCESS).send(successResponse(SUCCESS, null, "User verified successfully"));
+        } catch (error) {
+            logger.error("USER-VERIFICATION-SERVICES:: Error in userVerification controller: ", error);
+            res.status(INTERNAL_ERROR).send(errorResponse(INTERNAL_ERROR, "Error while verifying user!"));
+            return;
+        }
+    }
+
     // Forgot Password
     forgotPassword = async (req: Request, res: Response) => {
         try {
