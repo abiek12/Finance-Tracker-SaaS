@@ -79,7 +79,7 @@ const userSchema: Schema = new Schema({
     status: {
         type: String,
         enum: UserStatus,
-        default: UserStatus.ACTIVE
+        default: UserStatus.PENDING
     },
     isDeleted: {
         type: Boolean,
