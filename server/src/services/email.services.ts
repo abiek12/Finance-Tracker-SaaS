@@ -27,19 +27,16 @@ export class EmailServices {
             
             const templateReplacement = {
                 userName: user.userName,
-                verificationLink: `${process.env.FRONTEND_URL}/verify-email?token=${verificationToken}`
+                verificationLink: `${process.env.FRONTEND_URL}/verify-email/${userId}?token=${verificationToken}`
             };
 
             // Send verification email
             const res = await sendMail(user.email, "Email Verification", "verifyEmail.template.ejs", templateReplacement);
             if(!res) {
-                logger.error("EMAIL-SERVICES:: Error sending verification email!");
                 return CommonEnums.FAILED;
             }
 
-            logger.info("EMAIL-SERVICES:: Verification email sent successfully!");
             return CommonEnums.SUCCESS;
-
         } catch (error) {
             logger.error("EMAIL-SERVICES:: Error sending verification email: ", error);
             throw error;
