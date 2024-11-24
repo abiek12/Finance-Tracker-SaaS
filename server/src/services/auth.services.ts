@@ -1,7 +1,8 @@
 import { mapToUserResponse } from "../dtos/user.dto";
 import { CommonEnums } from "../models/enums/common.enum";
+import { UserStatus } from "../models/enums/user.enum";
 import { UserRepository } from "../models/repositories/user.repository";
-import { UserLoginData, UserRegData, UserResponseDto, userLoginResponse } from "../types/user.types";
+import { UserLoginData, UserLoginResult, UserRegData, UserResponseDto, userLoginResponse } from "../types/user.types";
 import { comparePassword, generateAccessToken, generateRefreshToken, hashPassword } from "../utils/common.utils";
 import logger from "../utils/logger.utils";
 
@@ -28,13 +29,21 @@ export class AuthServices {
     };
 
     // User Login
-    userLogin = async (userData: UserLoginData): Promise< userLoginResponse | null | CommonEnums.INVALID_PASSWORD> => {
+    userLogin = async (userData: UserLoginData): Promise< UserLoginResult > => {
         try {
             const user = await this.userRepository.findUserByEmail(userData.email);
-            if(!user) return null;
+            if(!user) {
+                return { status: CommonEnums.USER_NOT_FOUND };
+            }
 
+            if(user.status === UserStatus.PENDING) {
+                return { status: CommonEnums.USER_NOT_VERIFIED };
+            }
+            
             const isPasswordMatched = await comparePassword(userData.password, user.password);
-            if(!isPasswordMatched) return CommonEnums.INVALID_PASSWORD;
+            if(!isPasswordMatched) {
+                return { status: CommonEnums.INVALID_PASSWORD };
+            }
 
             const accessToken: string = await generateAccessToken(user._id);
             const refreshToken: string = await generateRefreshToken(user._id);
@@ -43,9 +52,12 @@ export class AuthServices {
             const userResponse = mapToUserResponse(user);
 
             return {
-                userResponse,
-                accessToken,
-                refreshToken
+                status: CommonEnums.SUCCESS,
+                data: {
+                    userResponse,
+                    accessToken,
+                    refreshToken
+                }
             }
             
         } catch (error) {

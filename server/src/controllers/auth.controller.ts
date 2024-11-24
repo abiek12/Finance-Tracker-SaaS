@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { AuthServices } from "../services/auth.services";
-import { UserRegData, userLoginResponse } from "../types/user.types";
+import { UserLoginResult, UserRegData, userLoginResponse } from "../types/user.types";
 import logger from "../utils/logger.utils";
 import { BAD_REQUEST, CONFLICT, SUCCESS, validateEmail } from "../utils/common.utils";
 import { errorResponse, successResponse } from "../utils/responseHandler.utils";
@@ -94,24 +94,32 @@ export class AuthController {
                 return;
             }
 
-            const userResponse: userLoginResponse | null | CommonEnums.INVALID_PASSWORD = await this.authServices.userLogin(userData);
-            if(!userResponse) {
+            // User login service
+            const authServiceRes: UserLoginResult = await this.authServices.userLogin(userData);
+            
+            if(authServiceRes.status === CommonEnums.USER_NOT_FOUND) {
                 logger.error("USER-REG-CONTROLLER:: User not found");
                 res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "User not found"));
                 return;
             }
 
-            if(userResponse === CommonEnums.INVALID_PASSWORD) {
+            if(authServiceRes.status === CommonEnums.USER_NOT_VERIFIED) {
+                logger.error("USER-REG-CONTROLLER:: User not verified");
+                res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "User not verified"));
+                return;
+            }
+
+            if(authServiceRes.status === CommonEnums.INVALID_PASSWORD) {
                 logger.error("USER-REG-CONTROLLER:: Invalid Password");
                 res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Invalid Password"));
                 return;
             }
 
             const resData = {
-                userId: userResponse.userResponse.id,
-                userName: userResponse.userResponse.userName,
-                accessToken: userResponse.accessToken,
-                refreshToken: userResponse.refreshToken
+                userId: authServiceRes.data.userResponse.id,
+                userName: authServiceRes.data.userResponse.userName,
+                accessToken: authServiceRes.data.accessToken,
+                refreshToken: authServiceRes.data.refreshToken
             }
 
             logger.info("USER-LOGIN-CONTROLLER:: User logged in successfully");
