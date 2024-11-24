@@ -12,7 +12,7 @@ userRoutes.patch("/", verifyToken, userController.updateUserDetails);
 // Send verification email
 userRoutes.get("/send-verification-email", verifyToken, userController.sendVerificationEmail);
 // User Email Verification
-userRoutes.get("/verify/:userId", userController.userVerification);
+userRoutes.get("/verify-email", userController.userVerification);
 // Forgot password
 userRoutes.post("/forgot-password", userController.forgotPassword);
 

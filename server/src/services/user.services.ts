@@ -2,7 +2,9 @@ import { mapToUserResponse } from "../dtos/user.dto";
 import { CommonEnums } from "../models/enums/common.enum";
 import { UserStatus } from "../models/enums/user.enum";
 import { UserRepository } from "../models/repositories/user.repository";
+import { jwtVerificationResult } from "../types/common.types";
 import { UserResponseDto } from "../types/user.types";
+import { jwtVerification } from "../utils/auth.utils";
 import logger from "../utils/logger.utils";
 
 export class UserServices {
@@ -36,14 +38,20 @@ export class UserServices {
     }
 
     // User Verification
-    userVerification = async (userId: string, token: string): Promise<CommonEnums> => {
+    userVerification = async (token: string): Promise<CommonEnums> => {
         try {
-            const user = await this.userRepository.findUserById(userId);
+            // Get user id and token from token
+            const verifyTokenRes: jwtVerificationResult = await jwtVerification(token);
+            if(verifyTokenRes.status !== CommonEnums.SUCCESS) {
+                return CommonEnums.INVALID;
+            }
+            
+            const user = await this.userRepository.findUserById(verifyTokenRes.user.userId);
             if(!user) {
                 return CommonEnums.USER_NOT_FOUND;
             }
 
-            // Check if user is already verified
+            // Check if user is already verified. This case applicable for email verification during forgot password after user is already verified
             if(user.status === UserStatus.ACTIVE) {
                 return CommonEnums.USER_ALREADY_VERIFIED;
             }
