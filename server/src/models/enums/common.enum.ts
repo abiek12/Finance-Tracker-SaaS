@@ -6,5 +6,7 @@ export enum CommonEnums {
     SUCCESS = "Success",
     FAILED = "Failed",
     INVALID = "Invalid",
+    EXPIRED = "Expired",
     USER_NOT_VERIFIED = "User not verified",
+    USER_ALREADY_VERIFIED = "User already verified",
 }
