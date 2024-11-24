@@ -61,5 +61,5 @@ export const createUniqueToken = async (id: string): Promise<string> => {
 
 // Generate Random User Name
 export const generateRandomUserName = async (userData: UserRegData): Promise<string> => {
-    return `${userData.email.split('@')[0]}_${Math.floor(Math.random() * 1000) + 1}`;
+    return `${userData.email.split('@')[0]}_${Math.floor(Math.random() * 10000) + 1}`;
 }

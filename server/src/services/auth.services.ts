@@ -2,7 +2,7 @@ import { mapToUserResponse } from "../dtos/user.dto";
 import { CommonEnums } from "../models/enums/common.enum";
 import { UserStatus } from "../models/enums/user.enum";
 import { UserRepository } from "../models/repositories/user.repository";
-import { UserLoginData, UserLoginResult, UserRegData, UserResponseDto, userLoginResponse } from "../types/user.types";
+import { UserLoginData, UserLoginResult, UserRegData, UserResponseDto } from "../types/user.types";
 import { comparePassword, generateAccessToken, generateRandomUserName, generateRefreshToken, hashPassword } from "../utils/common.utils";
 import logger from "../utils/logger.utils";
 
