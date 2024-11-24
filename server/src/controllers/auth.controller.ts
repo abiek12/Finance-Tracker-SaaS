@@ -17,7 +17,7 @@ export class AuthController {
     userRegistration = async (req: Request, res: Response) => {
         try {
             const userData = req.body as UserRegData;
-            if(!userData.userName || !userData.email || !userData.password) {
+            if(!userData.email || !userData.password) {
                 logger.error("USER-REG-CONTROLLER:: Missing required fields");
                 res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Missing required fields"));
                 return;
@@ -96,7 +96,7 @@ export class AuthController {
 
             // User login service
             const authServiceRes: UserLoginResult = await this.authServices.userLogin(userData);
-            
+
             if(authServiceRes.status === CommonEnums.USER_NOT_FOUND) {
                 logger.error("USER-REG-CONTROLLER:: User not found");
                 res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "User not found"));
@@ -105,7 +105,7 @@ export class AuthController {
 
             if(authServiceRes.status === CommonEnums.USER_NOT_VERIFIED) {
                 logger.error("USER-REG-CONTROLLER:: User not verified");
-                res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "User not verified"));
+                res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "User not verified, Please verify your email to login"));
                 return;
             }
 
