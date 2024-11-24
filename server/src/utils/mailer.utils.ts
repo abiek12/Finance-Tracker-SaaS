@@ -18,7 +18,10 @@ const transporter = nodemailer.createTransport({
 export const renderTemplate = (templateName: string, data: any) => {
     try {
         return new Promise((resolve, reject) => {
-            ejs.renderFile(path.join(__dirname, '../templates', templateName), data, (err, html) => {
+            const templatesPath = path.join(__dirname, "..", "templates"); // Go up one directory level
+            const templatePath = path.join(templatesPath, templateName);
+
+            ejs.renderFile(templatePath, data, (err, html) => {
                 if(err) {
                     logger.error(`EJS TEMPLTE RENDERING:: Error rendering template: ${err}`);
                     reject(err);
