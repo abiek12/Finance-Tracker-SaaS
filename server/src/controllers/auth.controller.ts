@@ -2,14 +2,16 @@ import { Request, Response } from "express";
 import { AuthServices } from "../services/auth.services";
 import { UserRegData, userLoginResponse } from "../types/user.types";
 import logger from "../utils/logger.utils";
-import { BAD_REQUEST, SUCCESS, validateEmail } from "../utils/common.utils";
+import { BAD_REQUEST, CONFLICT, SUCCESS, validateEmail } from "../utils/common.utils";
 import { errorResponse, successResponse } from "../utils/responseHandler.utils";
 import { UserRepository } from "../models/repositories/user.repository";
 import { CommonEnums } from "../models/enums/common.enum";
+import { EmailServices } from "../services/email.services";
 
 export class AuthController {
     private authServices = new AuthServices();
     private userRepo = new UserRepository();
+    private emailServices = new EmailServices();
     
     // User Registration
     userRegistration = async (req: Request, res: Response) => {
@@ -49,10 +51,31 @@ export class AuthController {
                 }
             }
 
-            const newUser = await this.authServices.userRegistration(userData); 
+            const newUser = await this.authServices.userRegistration(userData);
+            if(!newUser || !newUser.id) {
+                logger.error("USER-REG-CONTROLLER:: Error while registering user");
+                res.status(CONFLICT).send(errorResponse(CONFLICT, "Error while registering user"));
+                return;
+            }
+
+            // Send verification email
+            const response = await this.emailServices.sendVerificationEmail(newUser.id);
+
+            if(response === CommonEnums.USER_NOT_FOUND) {
+                logger.error("SEND-VERIFICATION-USER-CONTROLLER:: User not found");
+                res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "User not found"));
+                return;
+            }
+
+            if(response === CommonEnums.FAILED) {
+                logger.error("SEND-VERIFICATION-USER-CONTROLLER:: Error while sending verification email");
+                res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Error while sending verification email"));
+                return;
+            }
 
             logger.info("USER-REG-CONTROLLER:: User registered successfully");
-            res.status(SUCCESS).send(successResponse(SUCCESS, newUser, "User registered successfully"));
+            logger.info("USER-REG-CONTROLLER:: Verification email sent successfully");
+            res.status(SUCCESS).send(successResponse(SUCCESS, newUser, "User registered successfully. Please verify your email to login."));
             return;
         } catch (error) {
             logger.error("USER-REG-CONTROLLER:: Error in userRegistration controller: ", error);
