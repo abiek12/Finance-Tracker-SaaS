@@ -33,7 +33,7 @@ export const renderTemplate = (templateName: string, data: any) => {
 }
 
 // Send mail function
-export const sendMail = async (to: string, subject: string, templateName: string, data: any) => {
+export const sendMail = async (to: string, subject: string, templateName: string, data: any): Promise<boolean | Error> => {
     try {
         const html = await renderTemplate(templateName, data) as string;
         
@@ -45,7 +45,13 @@ export const sendMail = async (to: string, subject: string, templateName: string
         };
 
         const info = await transporter.sendMail(mailOptions);
+        if(!info.messageId) {
+            logger.error('MAILER:: Error sending email!');
+            return false;
+        }
+
         logger.info(`MAILER:: Email sent successfully: ${info.messageId}`);
+        return true;
     } catch (error) {
         logger.error(`MAILER:: Error sending email!: ${error}`);
         throw error;
