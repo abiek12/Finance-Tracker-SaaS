@@ -5,6 +5,7 @@ import { UserRoles, UserStatus } from "../enums/user.enum";
 const userSchema: Schema = new Schema({
     userName: {
         type: String,
+        unique: true,
         required: true
     },
     email: {

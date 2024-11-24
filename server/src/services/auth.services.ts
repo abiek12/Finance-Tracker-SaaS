@@ -3,7 +3,7 @@ import { CommonEnums } from "../models/enums/common.enum";
 import { UserStatus } from "../models/enums/user.enum";
 import { UserRepository } from "../models/repositories/user.repository";
 import { UserLoginData, UserLoginResult, UserRegData, UserResponseDto, userLoginResponse } from "../types/user.types";
-import { comparePassword, generateAccessToken, generateRefreshToken, hashPassword } from "../utils/common.utils";
+import { comparePassword, generateAccessToken, generateRandomUserName, generateRefreshToken, hashPassword } from "../utils/common.utils";
 import logger from "../utils/logger.utils";
 
 export class AuthServices {
@@ -12,9 +12,14 @@ export class AuthServices {
     // User Registration
     userRegistration = async (userData: UserRegData): Promise<UserResponseDto> => {
         try {
+            // Hashing password
             const hashedPassword = await hashPassword(userData.password);
+            
+            // Generating Random User Name
+            const randomUserName = await generateRandomUserName(userData);
             const userDetails = {
                 ...userData,
+                userName: randomUserName,
                 password: hashedPassword
             };
 

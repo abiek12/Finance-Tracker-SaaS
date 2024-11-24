@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { UserRegData } from '../types/user.types';
 dotenv.config();
 
 const SALT_ROUND = 10;
@@ -56,4 +57,9 @@ export const validateEmail = (email: string): boolean => {
 // Create token with id
 export const createUniqueToken = async (id: string): Promise<string> => {
     return jwt.sign({ id }, TOKEN_SECRET);
+}
+
+// Generate Random User Name
+export const generateRandomUserName = async (userData: UserRegData): Promise<string> => {
+    return `${userData.email.split('@')[0]}_${Math.floor(Math.random() * 1000) + 1}`;
 }

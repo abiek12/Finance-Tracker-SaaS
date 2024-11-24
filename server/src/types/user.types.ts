@@ -22,7 +22,6 @@ export interface UserLoginData {
 }
 
 export interface UserRegData extends UserLoginData {
-    userName: string;
     phone: string;
 }
 
