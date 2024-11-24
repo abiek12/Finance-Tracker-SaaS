@@ -5,6 +5,7 @@ import { UserRoles, UserStatus } from "../enums/user.enum";
 const userSchema: Schema = new Schema({
     userName: {
         type: String,
+        unique: true,
         required: true
     },
     email: {
@@ -63,11 +64,11 @@ const userSchema: Schema = new Schema({
         type: String,
         default: null
     },
-    resetPasswordToken: {
+    verificationToken: {
         type: String,
         default: null
     },
-    resetPasswordExpires: {
+    verificationTokenExpires: {
         type: Date,
         default: null
     },
@@ -79,7 +80,7 @@ const userSchema: Schema = new Schema({
     status: {
         type: String,
         enum: UserStatus,
-        default: UserStatus.ACTIVE
+        default: UserStatus.PENDING
     },
     isDeleted: {
         type: Boolean,

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 5px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .button {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 15px 25px;
+            border-radius: 5px;
+            margin: 25px 0 10px 0;
+            font-size: 16px;
+        }
+        .desc {
+            font-size: 14px;
+            color: #555555;
+        }
+        .intro {
+            font-size: 16px;
+            color: #333333;
+        }
+        .highlight {
+            color: #4CAF50;
+        }
+        .footer {
+            font-size: 12px;
+            color: #999999;
+        }
+    </style>
+</head>
+<body>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f7f7f7; padding: 20px;">
+        <tr>
+            <td align="center">
+                <table class="container" width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                        <td>
+                            <h1>Email Verification</h1>
+                            <p class="intro">Hello <span class="highlight"><%= userName %></span>,</p>
+                            <p class="desc">Thank you for registering with us. Please verify your email address by clicking the button below:</p>
+                            <a href="<%= verificationLink %>" class="button">Verify Email</a>
+                            <p class="footer">If you did not request this, please ignore this email.</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
