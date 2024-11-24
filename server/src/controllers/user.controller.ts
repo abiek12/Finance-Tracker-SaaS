@@ -1,10 +1,11 @@
 import { UserServices } from "../services/user.services";
 import { Request, Response } from "express";
 import logger from "../utils/logger.utils";
-import { BAD_REQUEST, INTERNAL_ERROR, SUCCESS } from "../utils/common.utils";
+import { BAD_REQUEST, CONFLICT, INTERNAL_ERROR, NOT_FOUND, SUCCESS, validateEmail } from "../utils/common.utils";
 import { errorResponse, successResponse } from "../utils/responseHandler.utils";
 import { CommonEnums } from "../models/enums/common.enum";
 import { EmailServices } from "../services/email.services";
+import { forgotPasswordRequest } from "../types/user.types";
 
 export class UserControllers {
     private userServices = new UserServices();
@@ -95,6 +96,44 @@ export class UserControllers {
         } catch (error) {
             logger.error("SEND-VERIFICATION-USER-CONTROLLER:: Error in sendVerificationEmail controller: ", error);
             res.status(INTERNAL_ERROR).send(errorResponse(INTERNAL_ERROR, "Error while sending verification email!"));
+        }
+    }
+
+    // Forgot Password
+    forgotPassword = async (req: Request, res: Response) => {
+        try {
+            const { email } = req.body as forgotPasswordRequest;
+            if(!email) {
+                logger.error("FORGOT-PASSWORD-USER-CONTROLLER:: Missing email field");
+                res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Missing email field"));
+                return;
+            }
+
+            if(!validateEmail(email)) {
+                logger.error("FORGOT-PASSWORD-USER-CONTROLLER:: Invalid email format");
+                res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Invalid email format"));
+                return;
+            }
+
+            const response = await this.emailServices.forgotPassword(email);
+            if(response === CommonEnums.USER_NOT_FOUND) {
+                logger.error("FORGOT-PASSWORD-USER-CONTROLLER:: User not found");
+                res.status(NOT_FOUND).send(errorResponse(NOT_FOUND, "User not found"));
+                return;
+            }
+
+            if(response === CommonEnums.FAILED) {
+                logger.error("FORGOT-PASSWORD-USER-CONTROLLER:: Error while sending forgot password email");
+                res.status(CONFLICT).send(errorResponse(CONFLICT, "Error while sending forgot password email"));
+                return;
+            }
+
+            logger.info("FORGOT-PASSWORD-USER-CONTROLLER:: Forgot password email sent successfully");
+            res.status(SUCCESS).send(successResponse(SUCCESS, null, "Forgot password email sent successfully"));
+            return;
+        } catch (error) {
+            logger.error("FORGOT-PASSWORD-USER-CONTROLLER:: Error in forgotPassword controller: ", error);
+            res.status(INTERNAL_ERROR).send(errorResponse(INTERNAL_ERROR, "Error while sending forgot password email!"));
         }
     }
 }

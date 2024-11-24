@@ -36,3 +36,7 @@ export type UserLoginResult =
     | { status: CommonEnums.USER_NOT_VERIFIED }
     | { status: CommonEnums.INVALID_PASSWORD }
     | { status: CommonEnums.USER_NOT_FOUND };
+
+export interface forgotPasswordRequest {
+    email: string;
+}

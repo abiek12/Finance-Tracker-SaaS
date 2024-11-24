@@ -27,7 +27,7 @@ export class EmailServices {
             
             const templateReplacement = {
                 userName: user.userName,
-                verificationLink: `${process.env.FRONTEND_URL}/verify-email/${userId}?token=${verificationToken}`
+                verificationLink: `${process.env.FRONTEND_URL}/verify-email/?token=${verificationToken}`
             };
 
             // Send verification email
@@ -40,6 +40,40 @@ export class EmailServices {
         } catch (error) {
             logger.error("EMAIL-SERVICES:: Error sending verification email: ", error);
             throw error;
+        }
+    }
+
+    // Send forgot password email
+    forgotPassword = async (email: string): Promise<CommonEnums> => {
+        try {
+            const user = await this.userRepository.findUserByEmail(email);
+            if(!user) {
+                logger.error("EMAIL-SERVICES:: User not found!");
+                return CommonEnums.USER_NOT_FOUND;
+            }
+
+            // Creating and storing verification token
+            const verificationToken = await createUniqueToken(user._id);
+            await this.userRepository.setVerificationToken(user._id, {
+                verificationToken,
+                verificationTokenExpires: new Date(Date.now() + 5 * 60 * 1000)
+            });
+
+            const templateReplacement = {
+                userName: user.userName,
+                resetPasswordLink: `${process.env.FRONTEND_URL}/reset-password/?token=${verificationToken}`
+            };
+
+            // Send forgot password email
+            const res = await sendMail(user.email, "Forgot Password", "forgotPassword.template.ejs", templateReplacement);
+            if(!res) {
+                return CommonEnums.FAILED;
+            }
+
+            return CommonEnums.SUCCESS;
+        } catch (error) {
+            logger.error("EMAIL-SERVICES:: Error sending forgot password email: ", error);
+            throw error;   
         }
     }
 }
