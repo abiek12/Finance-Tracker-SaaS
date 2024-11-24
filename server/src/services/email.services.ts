@@ -26,7 +26,7 @@ export class EmailServices {
             });
             
             const templateReplacement = {
-                name: user.userName,
+                userName: user.userName,
                 verificationLink: `${process.env.FRONTEND_URL}/verify-email?token=${verificationToken}`
             };
 
