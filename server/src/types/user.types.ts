@@ -40,3 +40,9 @@ export type UserLoginResult =
 export interface forgotPasswordRequest {
     email: string;
 }
+
+export interface resetPasswordRequest {
+    newPassword: string;
+    currentPassword?: string;
+    token?: string;
+}

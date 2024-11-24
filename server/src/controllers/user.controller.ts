@@ -1,11 +1,11 @@
 import { UserServices } from "../services/user.services";
 import { Request, Response } from "express";
 import logger from "../utils/logger.utils";
-import { BAD_REQUEST, CONFLICT, INTERNAL_ERROR, NOT_FOUND, SUCCESS, validateEmail } from "../utils/common.utils";
+import { BAD_REQUEST, CONFLICT, INTERNAL_ERROR, NOT_FOUND, SUCCESS, validateEmail, validatePassword } from "../utils/common.utils";
 import { errorResponse, successResponse } from "../utils/responseHandler.utils";
 import { CommonEnums } from "../models/enums/common.enum";
 import { EmailServices } from "../services/email.services";
-import { forgotPasswordRequest } from "../types/user.types";
+import { forgotPasswordRequest, resetPasswordRequest } from "../types/user.types";
 
 export class UserControllers {
     private userServices = new UserServices();
@@ -179,6 +179,33 @@ export class UserControllers {
         } catch (error) {
             logger.error("FORGOT-PASSWORD-USER-CONTROLLER:: Error in forgotPassword controller: ", error);
             res.status(INTERNAL_ERROR).send(errorResponse(INTERNAL_ERROR, "Error while sending forgot password email!"));
+            return;
+        }
+    }
+
+    // Reset Password
+    resetPassword = async (req: Request, res: Response) => {
+        try {
+            const { token, newPassword, currentPassword } = req.body as resetPasswordRequest;
+
+            if(!newPassword) {
+                logger.error("RESET-PASSWORD-USER-CONTROLLER:: Missing new password field");
+                res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Missing new password field"));
+                return;
+            }
+
+            if(!validatePassword(newPassword)) {
+                logger.error("RESET-PASSWORD-USER-CONTROLLER:: Password must be atleast 6 characters long");
+                res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Password must be atleast 6 characters long"));
+                return;
+            }
+
+            // const resetPassResponse = await this.userServices.resetPassword(token, newPassword, currentPassword);
+
+        } catch (error) {
+            logger.error("RESET-PASSWORD-USER-CONTROLLER:: Error in resetPassword controller: ", error);
+            res.status(INTERNAL_ERROR).send(errorResponse(INTERNAL_ERROR, "Error while resetting password"));
+            return;
         }
     }
 }
