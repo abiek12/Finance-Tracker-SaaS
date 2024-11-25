@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { AuthServices } from "../services/auth.services";
-import { UserLoginResult, UserRegData, userLoginResponse } from "../types/user.types";
+import { UserLoginResult, UserRegData } from "../types/user.types";
 import logger from "../utils/logger.utils";
-import { BAD_REQUEST, CONFLICT, SUCCESS, validateEmail } from "../utils/common.utils";
+import { BAD_REQUEST, CONFLICT, INTERNAL_ERROR, SUCCESS, validateEmail, validatePassword, validatePhone } from "../utils/common.utils";
 import { errorResponse, successResponse } from "../utils/responseHandler.utils";
 import { UserRepository } from "../models/repositories/user.repository";
 import { CommonEnums } from "../models/enums/common.enum";
@@ -29,6 +29,12 @@ export class AuthController {
                 return;
             }
 
+            if(!validatePassword(userData.password)) {
+                logger.error("USER-REG-CONTROLLER:: Password must be atleast 6 characters long with atleast 1 number and 1 special character");
+                res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Password must be atleast 6 characters long with atleast 1 number and 1 special character"));
+                return;
+            }
+
             const existingUser = await this.userRepo.findUserByEmail(userData.email);
             if(existingUser) {
                 logger.error("USER-REG-CONTROLLER:: User already exists with this email");
@@ -37,7 +43,7 @@ export class AuthController {
             }
 
             if(userData.phone) {
-                if(userData.phone.length !== 10) {
+                if(!validatePhone(userData.phone)) {
                     logger.error("USER-REG-CONTROLLER:: Invalid phone number");
                     res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Invalid phone number"));
                     return;
@@ -79,7 +85,7 @@ export class AuthController {
             return;
         } catch (error) {
             logger.error("USER-REG-CONTROLLER:: Error in userRegistration controller: ", error);
-            res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Error while registering user!"));
+            res.status(INTERNAL_ERROR).send(errorResponse(INTERNAL_ERROR, "Error while registering user!"));
             return;
         }
     }
@@ -127,8 +133,9 @@ export class AuthController {
             return;
         } catch (error) {
             logger.error("USER-REG-CONTROLLER:: Error in userLogin controller: ", error);
-            res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Error while logging in user!"));
+            res.status(INTERNAL_ERROR).send(errorResponse(INTERNAL_ERROR, "Error while logging in user!"));
             return   
         }
     }
+
 }

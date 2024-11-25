@@ -1,5 +1,6 @@
 import { tokenType } from "../../types/common.types";
 import { UserRegData } from "../../types/user.types";
+import { UserStatus } from "../enums/user.enum";
 import { IUser } from "../interfaces/user.interface";
 import { User } from "../schemas/user.schema";
 
@@ -46,6 +47,20 @@ export class UserRepository {
         await User.findByIdAndUpdate(id, {
             verificationToken: data.verificationToken,
             verificationTokenExpires: data.verificationTokenExpires
+        });
+    }
+
+    updateUserStatus = async (id: string, status: UserStatus): Promise<void> => {
+        await User.findByIdAndUpdate(id, {
+            status
+        });
+    }
+
+    updateUserPassword = async (id: string, password: string): Promise<void> => {
+        await User.findByIdAndUpdate(id, {
+            password,
+            verificationToken: null,
+            verificationTokenExpires: new Date(0)
         });
     }
 }

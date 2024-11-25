@@ -54,6 +54,18 @@ export const validateEmail = (email: string): boolean => {
     return emailRegex.test(email);
 }
 
+// Validate Phone Number
+export const validatePhone = (phone: string): boolean => {
+    const phoneRegex = /^[0-9]{10}$/;
+    return phoneRegex.test(phone);
+}
+
+// Validate Password at least 6 characters long with atleast one number and special character
+export const validatePassword = (password: string): boolean => {
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+    return passwordRegex.test(password);
+}
+
 // Create token with id
 export const createUniqueToken = async (id: string): Promise<string> => {
     return jwt.sign({ id }, TOKEN_SECRET);

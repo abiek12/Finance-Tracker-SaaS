@@ -11,5 +11,11 @@ userRoutes.get("/", verifyToken, userController.getUserDetails);
 userRoutes.patch("/", verifyToken, userController.updateUserDetails);
 // Send verification email
 userRoutes.get("/send-verification-email", verifyToken, userController.sendVerificationEmail);
+// User Email Verification
+userRoutes.get("/verify-email", userController.userVerification);
+// Forgot password
+userRoutes.post("/forgot-password", userController.forgotPassword);
+// Reset password
+userRoutes.post("/reset-password", userController.resetPassword);
 
 export default userRoutes;
