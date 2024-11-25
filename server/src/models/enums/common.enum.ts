@@ -9,4 +9,7 @@ export enum CommonEnums {
     EXPIRED = "Expired",
     USER_NOT_VERIFIED = "User not verified",
     USER_ALREADY_VERIFIED = "User already verified",
+    MISSING_REQUIRED_FIELDS = "Missing required fields",
+    INVALID_REQUEST = "Invalid request",
+    SAME_PASSWORD = "Current password and new password are same",
 }

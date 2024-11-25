@@ -55,4 +55,12 @@ export class UserRepository {
             status
         });
     }
+
+    updateUserPassword = async (id: string, password: string): Promise<void> => {
+        await User.findByIdAndUpdate(id, {
+            password,
+            verificationToken: null,
+            verificationTokenExpires: new Date(0)
+        });
+    }
 }

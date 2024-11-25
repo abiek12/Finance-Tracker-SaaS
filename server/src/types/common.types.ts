@@ -15,3 +15,8 @@ export type tokenType = {
 export type jwtVerificationResult = 
     | { status: CommonEnums.SUCCESS; user: any }
     | { status: CommonEnums.INVALID; user: null };
+
+export interface passwords {
+    newPassword: string;
+    currentPassword?: string;
+}
