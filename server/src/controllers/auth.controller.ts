@@ -5,7 +5,7 @@ import logger from "../utils/logger.utils";
 import { BAD_REQUEST, CONFLICT, INTERNAL_ERROR, SUCCESS, validateEmail, validatePassword, validatePhone } from "../utils/common.utils";
 import { errorResponse, successResponse } from "../utils/responseHandler.utils";
 import { UserRepository } from "../models/repositories/user.repository";
-import { CommonEnums } from "../models/enums/common.enum";
+import { CommonReturns } from "../models/enums/common.enum";
 import { EmailServices } from "../services/email.services";
 
 export class AuthController {
@@ -67,13 +67,13 @@ export class AuthController {
             // Send verification email
             const response = await this.emailServices.sendVerificationEmail(newUser.id);
 
-            if(response === CommonEnums.USER_NOT_FOUND) {
+            if(response === CommonReturns.USER_NOT_FOUND) {
                 logger.error("SEND-VERIFICATION-USER-CONTROLLER:: User not found");
                 res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "User not found"));
                 return;
             }
 
-            if(response === CommonEnums.FAILED) {
+            if(response === CommonReturns.FAILED) {
                 logger.error("SEND-VERIFICATION-USER-CONTROLLER:: Error while sending verification email");
                 res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Error while sending verification email"));
                 return;
@@ -103,19 +103,19 @@ export class AuthController {
             // User login service
             const authServiceRes: UserLoginResult = await this.authServices.userLogin(userData);
 
-            if(authServiceRes.status === CommonEnums.USER_NOT_FOUND) {
+            if(authServiceRes.status === CommonReturns.USER_NOT_FOUND) {
                 logger.error("USER-REG-CONTROLLER:: User not found");
                 res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "User not found"));
                 return;
             }
 
-            if(authServiceRes.status === CommonEnums.USER_NOT_VERIFIED) {
+            if(authServiceRes.status === CommonReturns.USER_NOT_VERIFIED) {
                 logger.error("USER-REG-CONTROLLER:: User not verified");
                 res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "User not verified, Please verify your email to login"));
                 return;
             }
 
-            if(authServiceRes.status === CommonEnums.INVALID_PASSWORD) {
+            if(authServiceRes.status === CommonReturns.INVALID_PASSWORD) {
                 logger.error("USER-REG-CONTROLLER:: Invalid Password");
                 res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Invalid Password"));
                 return;

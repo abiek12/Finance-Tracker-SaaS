@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import logger from "../utils/logger.utils";
 import { BAD_REQUEST, CONFLICT, INTERNAL_ERROR, NOT_FOUND, SUCCESS, validateEmail, validatePassword } from "../utils/common.utils";
 import { errorResponse, successResponse } from "../utils/responseHandler.utils";
-import { CommonEnums } from "../models/enums/common.enum";
+import { CommonReturns } from "../models/enums/common.enum";
 import { EmailServices } from "../services/email.services";
 import { forgotPasswordRequest, resetPasswordRequest } from "../types/user.types";
 
@@ -48,7 +48,7 @@ export class UserControllers {
             }
 
             const user = await this.userServices.updateUserDetails(userId, updatedData);
-            if(user === CommonEnums.USER_NOT_FOUND) {
+            if(user === CommonReturns.USER_NOT_FOUND) {
                 logger.error("UPDATE-USER-CONTROLLER:: User not found");
                 res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "User not found"));
                 return;
@@ -79,13 +79,13 @@ export class UserControllers {
             }
 
             const response = await this.emailServices.sendVerificationEmail(userId);
-            if(response === CommonEnums.USER_NOT_FOUND) {
+            if(response === CommonReturns.USER_NOT_FOUND) {
                 logger.error("SEND-VERIFICATION-USER-CONTROLLER:: User not found");
                 res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "User not found"));
                 return;
             }
 
-            if(response === CommonEnums.FAILED) {
+            if(response === CommonReturns.FAILED) {
                 logger.error("SEND-VERIFICATION-USER-CONTROLLER:: Error while sending verification email");
                 res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Error while sending verification email"));
                 return;
@@ -109,27 +109,27 @@ export class UserControllers {
                 return;
             }
 
-            const response: CommonEnums = await this.userServices.userVerification(verificationToken);
-            if(response === CommonEnums.USER_NOT_FOUND) {
+            const response: CommonReturns = await this.userServices.userVerification(verificationToken);
+            if(response === CommonReturns.USER_NOT_FOUND) {
                 logger.error("USER-VERIFICATION-SERVICES:: User not found");
                 res.status(NOT_FOUND).send(errorResponse(NOT_FOUND, "User not found"));
                 return;
             }
             
             // User already verified. This case applicable for email verification during forgot password after user is already verified
-            if(response === CommonEnums.USER_ALREADY_VERIFIED) {
+            if(response === CommonReturns.USER_ALREADY_VERIFIED) {
                 logger.error("USER-VERIFICATION-SERVICES:: User already verified");
                 res.status(CONFLICT).send(errorResponse(CONFLICT, "User already verified"));
                 return;
             }
 
-            if(response === CommonEnums.INVALID) {
+            if(response === CommonReturns.INVALID) {
                 logger.error("USER-VERIFICATION-SERVICES:: Invalid token");
                 res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Invalid token"));
                 return;
             }
 
-            if(response === CommonEnums.EXPIRED) {
+            if(response === CommonReturns.EXPIRED) {
                 logger.error("USER-VERIFICATION-SERVICES:: Token expired");
                 res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Token expired"));
                 return;
@@ -161,13 +161,13 @@ export class UserControllers {
             }
 
             const response = await this.emailServices.forgotPassword(email);
-            if(response === CommonEnums.USER_NOT_FOUND) {
+            if(response === CommonReturns.USER_NOT_FOUND) {
                 logger.error("FORGOT-PASSWORD-USER-CONTROLLER:: User not found");
                 res.status(NOT_FOUND).send(errorResponse(NOT_FOUND, "User not found"));
                 return;
             }
 
-            if(response === CommonEnums.FAILED) {
+            if(response === CommonReturns.FAILED) {
                 logger.error("FORGOT-PASSWORD-USER-CONTROLLER:: Error while sending forgot password email");
                 res.status(CONFLICT).send(errorResponse(CONFLICT, "Error while sending forgot password email"));
                 return;
@@ -224,43 +224,43 @@ export class UserControllers {
             }
 
             const response = await this.userServices.resetPassword({ newPassword, currentPassword }, token, user.userId);
-            if(response === CommonEnums.USER_NOT_FOUND) {
+            if(response === CommonReturns.USER_NOT_FOUND) {
                 logger.error("RESET-PASSWORD-USER-CONTROLLER:: User not found");
                 res.status(NOT_FOUND).send(errorResponse(NOT_FOUND, "User not found"));
                 return;
             }
 
-            if(response === CommonEnums.INVALID) {
+            if(response === CommonReturns.INVALID) {
                 logger.error("RESET-PASSWORD-USER-CONTROLLER:: Invalid token");
                 res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Invalid token"));
                 return;
             }
 
-            if(response === CommonEnums.EXPIRED) {
+            if(response === CommonReturns.EXPIRED) {
                 logger.error("RESET-PASSWORD-USER-CONTROLLER:: Token expired");
                 res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Token expired"));
                 return;
             }
 
-            if(response === CommonEnums.MISSING_REQUIRED_FIELDS) {
+            if(response === CommonReturns.MISSING_REQUIRED_FIELDS) {
                 logger.error("RESET-PASSWORD-USER-CONTROLLER:: Missing password fields");
                 res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Missing password fields"));
                 return;
             }
 
-            if(response === CommonEnums.SAME_PASSWORD) {
+            if(response === CommonReturns.SAME_PASSWORD) {
                 logger.error("RESET-PASSWORD-USER-CONTROLLER:: Current password and new password are same");
                 res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Current password and new password are same"));
                 return;
             }
 
-            if(response === CommonEnums.INVALID_PASSWORD) {
+            if(response === CommonReturns.INVALID_PASSWORD) {
                 logger.error("RESET-PASSWORD-USER-CONTROLLER:: Incorrect password");
                 res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Incorrect password"));
                 return;
             }
 
-            if(response === CommonEnums.INVALID_REQUEST) {
+            if(response === CommonReturns.INVALID_REQUEST) {
                 logger.error("RESET-PASSWORD-USER-CONTROLLER:: Invalid request");
                 res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Invalid request"));
                 return;
