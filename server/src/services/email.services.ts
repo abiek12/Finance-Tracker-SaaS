@@ -22,7 +22,7 @@ export class EmailServices {
             const verificationToken = await createUniqueToken(userId);
             await this.userRepository.setVerificationToken(userId, {
                 verificationToken,
-                verificationTokenExpires: new Date(Date.now() + 5 * 60 * 1000)
+                verificationTokenExpires: new Date(Date.now() + 24 * 60 * 60 * 1000)
             });
             
             const templateReplacement = {
@@ -56,7 +56,7 @@ export class EmailServices {
             const verificationToken = await createUniqueToken(user._id);
             await this.userRepository.setVerificationToken(user._id, {
                 verificationToken,
-                verificationTokenExpires: new Date(Date.now() + 5 * 60 * 1000)
+                verificationTokenExpires: new Date(Date.now() + 15 * 60 * 1000)
             });
 
             const templateReplacement = {
