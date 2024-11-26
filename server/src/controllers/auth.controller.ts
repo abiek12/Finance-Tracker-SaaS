@@ -30,8 +30,8 @@ export class AuthController {
             }
 
             if(!validatePassword(userData.password)) {
-                logger.error("USER-REG-CONTROLLER:: Password must be atleast 6 characters long with atleast 1 number and 1 special character");
-                res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Password must be atleast 6 characters long with atleast 1 number and 1 special character"));
+                logger.error("USER-REG-CONTROLLER:: Password must be at least 6 characters long and include at least 1 number and 1 special character.");
+                res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Invalid Password format", "ERROR", "Password must be at least 6 characters long and include at least 1 number and 1 special character."));
                 return;
             }
 
