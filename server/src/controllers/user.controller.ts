@@ -207,18 +207,18 @@ export class UserControllers {
                     res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "You are not authorized to reset password without login"));
                     return;
                 }
+
+                if(!currentPassword) {
+                    logger.error("RESET-PASSWORD-USER-CONTROLLER:: Missing current password field");
+                    res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Missing current password field"));
+                    return;
+                }
             }
 
             if(!user) {
                 if(!token) {
                     logger.error("RESET-PASSWORD-USER-CONTROLLER:: Missing required fields");
                     res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Missing required fields"));
-                    return;
-                }
-
-                if(!currentPassword) {
-                    logger.error("RESET-PASSWORD-USER-CONTROLLER:: Missing current password field");
-                    res.status(BAD_REQUEST).send(errorResponse(BAD_REQUEST, "Missing current password field"));
                     return;
                 }
             }
