@@ -47,7 +47,7 @@ export class UserServices {
                 return CommonReturns.INVALID;
             }
             
-            const user = await this.userRepository.findUserById(verifyTokenRes.user.userId);
+            const user = await this.userRepository.findUserById(verifyTokenRes.user.id);
             if(!user) {
                 return CommonReturns.USER_NOT_FOUND;
             }

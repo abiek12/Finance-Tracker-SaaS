@@ -52,7 +52,9 @@ export class UserRepository {
 
     updateUserStatus = async (id: string, status: UserStatus): Promise<void> => {
         await User.findByIdAndUpdate(id, {
-            status
+            status,
+            verificationToken: null,
+            verificationTokenExpires: new Date(0)
         });
     }
 
