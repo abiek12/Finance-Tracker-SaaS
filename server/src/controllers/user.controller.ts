@@ -186,7 +186,8 @@ export class UserControllers {
     // Reset Password
     resetPassword = async (req: Request, res: Response) => {
         try {
-            const { token, newPassword, currentPassword } = req.body as resetPasswordRequest;
+            const { newPassword, currentPassword } = req.body as resetPasswordRequest;
+            const token = req.params.token;
             const user = (req as any).user;
 
             if(!newPassword) {

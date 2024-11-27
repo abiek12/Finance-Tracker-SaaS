@@ -44,5 +44,4 @@ export interface forgotPasswordRequest {
 export interface resetPasswordRequest {
     newPassword: string;
     currentPassword?: string;
-    token?: string;
 }
