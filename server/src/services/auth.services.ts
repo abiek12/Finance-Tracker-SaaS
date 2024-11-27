@@ -1,5 +1,5 @@
 import { mapToUserResponse } from "../dtos/user.dto";
-import { CommonEnums } from "../models/enums/common.enum";
+import { CommonReturns } from "../models/enums/common.enum";
 import { UserStatus } from "../models/enums/user.enum";
 import { UserRepository } from "../models/repositories/user.repository";
 import { UserLoginData, UserLoginResult, UserRegData, UserResponseDto } from "../types/user.types";
@@ -38,16 +38,16 @@ export class AuthServices {
         try {
             const user = await this.userRepository.findUserByEmail(userData.email);
             if(!user) {
-                return { status: CommonEnums.USER_NOT_FOUND };
+                return { status: CommonReturns.USER_NOT_FOUND };
             }
 
             if(user.status === UserStatus.PENDING) {
-                return { status: CommonEnums.USER_NOT_VERIFIED };
+                return { status: CommonReturns.USER_NOT_VERIFIED };
             }
             
             const isPasswordMatched = await comparePassword(userData.password, user.password);
             if(!isPasswordMatched) {
-                return { status: CommonEnums.INVALID_PASSWORD };
+                return { status: CommonReturns.INVALID_PASSWORD };
             }
 
             const accessToken: string = await generateAccessToken(user._id);
@@ -57,7 +57,7 @@ export class AuthServices {
             const userResponse = mapToUserResponse(user);
 
             return {
-                status: CommonEnums.SUCCESS,
+                status: CommonReturns.SUCCESS,
                 data: {
                     userResponse,
                     accessToken,

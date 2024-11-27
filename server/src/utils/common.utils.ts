@@ -62,7 +62,7 @@ export const validatePhone = (phone: string): boolean => {
 
 // Validate Password at least 6 characters long with atleast one number and special character
 export const validatePassword = (password: string): boolean => {
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@#$%^&+=]{6,}$/;
     return passwordRegex.test(password);
 }
 

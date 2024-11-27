@@ -15,7 +15,9 @@ userRoutes.get("/send-verification-email", verifyToken, userController.sendVerif
 userRoutes.get("/verify-email", userController.userVerification);
 // Forgot password
 userRoutes.post("/forgot-password", userController.forgotPassword);
-// Reset password
-userRoutes.post("/reset-password", userController.resetPassword);
+// Reset password with login
+userRoutes.post("/reset-password", verifyToken, userController.resetPassword);
+// Reset password without login
+userRoutes.post("/reset-password/:token", userController.resetPassword);
 
 export default userRoutes;

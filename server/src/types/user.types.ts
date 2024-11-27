@@ -1,4 +1,4 @@
-import { CommonEnums } from "../models/enums/common.enum";
+import { CommonReturns } from "../models/enums/common.enum";
 
 export interface UserResponseDto {
     id: string;
@@ -32,10 +32,10 @@ export type userLoginResponse = {
 }
 
 export type UserLoginResult = 
-    | { status: CommonEnums.SUCCESS; data: userLoginResponse }
-    | { status: CommonEnums.USER_NOT_VERIFIED }
-    | { status: CommonEnums.INVALID_PASSWORD }
-    | { status: CommonEnums.USER_NOT_FOUND };
+    | { status: CommonReturns.SUCCESS; data: userLoginResponse }
+    | { status: CommonReturns.USER_NOT_VERIFIED }
+    | { status: CommonReturns.INVALID_PASSWORD }
+    | { status: CommonReturns.USER_NOT_FOUND };
 
 export interface forgotPasswordRequest {
     email: string;
@@ -44,5 +44,4 @@ export interface forgotPasswordRequest {
 export interface resetPasswordRequest {
     newPassword: string;
     currentPassword?: string;
-    token?: string;
 }

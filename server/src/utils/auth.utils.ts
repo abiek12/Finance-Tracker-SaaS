@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { CommonEnums } from '../models/enums/common.enum';
+import { CommonReturns } from '../models/enums/common.enum';
 import logger from './logger.utils';
 import { jwtVerificationResult } from '../types/common.types';
 
@@ -10,9 +10,9 @@ export const jwtVerification = async (jwtToken: string): Promise<jwtVerification
         return new Promise<jwtVerificationResult>((resolve, reject) => {
             jwt.verify(jwtToken, TOKEN_SECRET, (err, user) => {
                 if (err) {
-                    resolve({ status: CommonEnums.INVALID, user: null });
+                    resolve({ status: CommonReturns.INVALID, user: null });
                 } else {
-                    resolve({ status: CommonEnums.SUCCESS, user });
+                    resolve({ status: CommonReturns.SUCCESS, user });
                 }
             });
         });

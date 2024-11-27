@@ -1,4 +1,4 @@
-import { CommonEnums } from "../models/enums/common.enum";
+import { CommonReturns } from "../models/enums/common.enum";
 
 export type logType = {
     level: string;
@@ -13,8 +13,8 @@ export type tokenType = {
 };
 
 export type jwtVerificationResult = 
-    | { status: CommonEnums.SUCCESS; user: any }
-    | { status: CommonEnums.INVALID; user: null };
+    | { status: CommonReturns.SUCCESS; user: any }
+    | { status: CommonReturns.INVALID; user: null };
 
 export interface passwords {
     newPassword: string;
