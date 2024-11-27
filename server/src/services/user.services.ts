@@ -82,14 +82,14 @@ export class UserServices {
     resetPassword = async (passwords: passwords, token?: string, userId?:string): Promise<CommonReturns> => {
         try {
             let user;
-
+                        
             // Case 1: Forgot Password (Without Login)
             if(token) {
                 const verifyTokenRes: jwtVerificationResult = await jwtVerification(token);
                 if(verifyTokenRes.status !== CommonReturns.SUCCESS) {
                     return CommonReturns.INVALID;
                 }
-                user = await this.userRepository.findUserById(verifyTokenRes.user.userId);
+                user = await this.userRepository.findUserById(verifyTokenRes.user.id);
 
                 if(!user) {
                     return CommonReturns.USER_NOT_FOUND;

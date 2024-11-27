@@ -222,8 +222,8 @@ export class UserControllers {
                     return;
                 }
             }
-
-            const response = await this.userServices.resetPassword({ newPassword, currentPassword }, token, user.userId);
+            
+            const response = await this.userServices.resetPassword({ newPassword, currentPassword }, token, user?.userId);
             if(response === CommonReturns.USER_NOT_FOUND) {
                 logger.error("RESET-PASSWORD-USER-CONTROLLER:: User not found");
                 res.status(NOT_FOUND).send(errorResponse(NOT_FOUND, "User not found"));
