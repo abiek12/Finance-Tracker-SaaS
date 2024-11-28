@@ -2,6 +2,8 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { UserRegData } from '../types/user.types';
+import fs from 'fs';
+import logger from './logger.utils';
 dotenv.config();
 
 const SALT_ROUND = 10;
@@ -74,4 +76,13 @@ export const createUniqueToken = async (id: string): Promise<string> => {
 // Generate Random User Name
 export const generateRandomUserName = async (userData: UserRegData): Promise<string> => {
     return `${userData.email.split('@')[0]}_${Math.floor(Math.random() * 10000) + 1}`;
+}
+
+// Create upload directory
+export const createUploadDirectory = (directory: string): void => {
+    if (!fs.existsSync(directory)) {
+        logger.info(`Creating upload directory...: ${directory}`);
+        fs.mkdirSync(directory, { recursive: true });
+        logger.info(`Upload directory created successfully: ${directory}`);
+    }
 }

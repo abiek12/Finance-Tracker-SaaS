@@ -5,6 +5,7 @@ import authRoutes from "./routes/auth.routes";
 import userRoutes from "./routes/user.routes";
 import fileRoutes from "./routes/file.routes";
 import path from "path";
+import { createUploadDirectory } from "./utils/common.utils";
 
 dotenv.config();
 
@@ -21,6 +22,9 @@ const corsOptions = {
 
 // Set up static folder for serving files
 const uploadsDirectory = path.join(process.cwd(), '../../server/uploads');
+
+// Create uploads directory if not exists
+createUploadDirectory(uploadsDirectory);
 
 // Common Middlewares
 app.use(cors(corsOptions));
