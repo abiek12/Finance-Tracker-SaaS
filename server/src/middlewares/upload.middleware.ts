@@ -1,7 +1,7 @@
 import multer from 'multer';
 import path from 'path';
 
-const uploadsDirectory = path.join(process.cwd(), 'uploads');
+const uploadsDirectory = path.join(process.cwd(), '../../server/uploads');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {

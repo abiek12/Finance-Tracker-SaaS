@@ -20,7 +20,7 @@ const corsOptions = {
 };
 
 // Set up static folder for serving files
-const uploadsDirectory = path.join(process.cwd(), 'uploads');
+const uploadsDirectory = path.join(process.cwd(), '../../server/uploads');
 
 // Common Middlewares
 app.use(cors(corsOptions));
