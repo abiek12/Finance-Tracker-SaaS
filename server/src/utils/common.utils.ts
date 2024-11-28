@@ -87,6 +87,6 @@ export const createUploadDirectory = (directory: string): void => {
             logger.error(`Error creating upload directory: ${directory}`);
             return;
         }
-        logger.info(`Upload directory created successfully: ${directory}`);
+        logger.info(`Upload directory created successfully.`);
     }
 }
