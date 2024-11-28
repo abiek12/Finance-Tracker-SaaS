@@ -2,7 +2,7 @@ import multer from 'multer';
 import path from 'path';
 import { createUploadDirectory } from '../utils/common.utils';
 
-const uploadsDirectory = path.join(process.cwd(), '../../server/src/uploads');
+const uploadsDirectory = path.join(__dirname, '../../server/src/uploads');
 createUploadDirectory(uploadsDirectory);
 
 const storage = multer.diskStorage({
