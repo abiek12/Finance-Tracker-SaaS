@@ -4,6 +4,7 @@ import cors from "cors";
 import authRoutes from "./routes/auth.routes";
 import userRoutes from "./routes/user.routes";
 import fileRoutes from "./routes/file.routes";
+import path from "path";
 
 dotenv.config();
 
@@ -18,10 +19,14 @@ const corsOptions = {
     allowedHeaders: ['Content-Type', 'Authorization'], // Specify allowed headers
 };
 
+// Set up static folder for serving files
+const uploadsDirectory = path.join(process.cwd(), 'uploads');
+
 // Common Middlewares
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(uploadsDirectory));
 
 // Routes
 app.use("/api/v1/auth", authRoutes);
