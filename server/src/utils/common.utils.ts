@@ -82,7 +82,11 @@ export const generateRandomUserName = async (userData: UserRegData): Promise<str
 export const createUploadDirectory = (directory: string): void => {
     if (!fs.existsSync(directory)) {
         logger.info(`Creating upload directory... ${directory}`);
-        fs.mkdirSync(directory, { recursive: true });
+        const res = fs.mkdirSync(directory, { recursive: true });
+        if(res === undefined) {
+            logger.error(`Error creating upload directory: ${directory}`);
+            return;
+        }
         logger.info(`Upload directory created successfully: ${directory}`);
     }
 }
