@@ -21,7 +21,7 @@ const corsOptions = {
 };
 
 // Set up static folder for serving files
-const uploadsDirectory = path.join(process.cwd(), '../../server/uploads');
+const uploadsDirectory = path.join(__dirname, '../../server/src/uploads');
 
 // Create uploads directory if not exists
 createUploadDirectory(uploadsDirectory);
