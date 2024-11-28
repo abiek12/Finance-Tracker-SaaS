@@ -30,7 +30,7 @@ createUploadDirectory(uploadsDirectory);
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(uploadsDirectory));
+app.use("/uploads", express.static(uploadsDirectory));
 
 // Routes
 app.use("/api/v1/auth", authRoutes);
