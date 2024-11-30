@@ -6,8 +6,6 @@ The SaaS Expense Tracker is a modern financial management application designed t
 
 This solution is built to scale, featuring multi-tenancy support, and MongoDB sharding for optimized data management.
 
----
-
 ## 🚀 Features
 
 ### **Core Features**
@@ -20,8 +18,6 @@ This solution is built to scale, featuring multi-tenancy support, and MongoDB sh
 - **CSV Imports**: Import financial data with validation and mapping.
 - **Subscription Plans**: Plan management with recurring payments, invoices, and usage limits.
 
----
-
 ## 🛠️ Tech Stack
 
 ### **Backend**
@@ -33,5 +29,3 @@ This solution is built to scale, featuring multi-tenancy support, and MongoDB sh
 ### **Frontend**
 - **React.js**
 - **Tailwind CSS**
-
----
