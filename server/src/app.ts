@@ -6,6 +6,7 @@ import userRoutes from "./routes/user.routes";
 import fileRoutes from "./routes/file.routes";
 import path from "path";
 import { createUploadDirectory } from "./utils/common.utils";
+import healthCheckRoutes from "./routes/healthCheck.routes";
 
 dotenv.config();
 
@@ -33,6 +34,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static(uploadsDirectory));
 
 // Routes
+app.use("api/v1/health", healthCheckRoutes);
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/file", fileRoutes);
