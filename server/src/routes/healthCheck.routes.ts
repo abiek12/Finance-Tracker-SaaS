@@ -14,7 +14,8 @@ healthCheckRoutes.get("/", (req, res) => {
         }
         res.status(SUCCESS).send(successResponse(SUCCESS, health, "Server is up and running!"));
     } catch (error) {
-        res.status(SERVICE_UNAVAILABLE).send(errorResponse(SERVICE_UNAVAILABLE, "Server is down!"));
+        const errorMessage = error instanceof Error ? error.message : "Server is down!";
+        res.status(SERVICE_UNAVAILABLE).send(errorResponse(SERVICE_UNAVAILABLE, errorMessage));
     }
 });
 
