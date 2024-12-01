@@ -34,7 +34,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static(uploadsDirectory));
 
 // Routes
-app.use("/", healthCheckRoutes);
+app.use("/api/v1/health", healthCheckRoutes);
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/file", fileRoutes);
