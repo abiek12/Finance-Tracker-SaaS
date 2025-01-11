@@ -1,4 +1,4 @@
-# SaaS Finance Tracker System 
+# SaaS Finance Tracker System
 
 ## 📝 Project Overview
 The SaaS Expense Tracker is a modern financial management application designed to help users track expenses and income, manage budgets, and set financial goals. The platform offers real-time bank account integration, enabling Pro plan users to fetch live transaction details and balance updates via **Plaid**. It also supports CSV imports and advanced analytics, reports for comprehensive financial tracking.
